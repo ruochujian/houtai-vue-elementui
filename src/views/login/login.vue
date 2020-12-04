@@ -7,9 +7,9 @@
                     <el-input v-model="formData.username" placeholder="请输入账号"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
-                    <el-input v-model="formData.password" placeholder="请输入密码"></el-input>
+                    <el-input v-model="formData.password" placeholder="请输入密码"  @keyup.enter.native="handleLogin()"></el-input>
                 </el-form-item>
-                <el-button type="primary" class="" @click="handleLogin">登录</el-button>
+                <el-button type="primary" @click="handleLogin">登录</el-button>
             </el-form>
         </div>
     </div>
@@ -54,9 +54,6 @@ export default {
                     this.$router.push('/Home')
                 }
             })
-            // this.$http.post('login',this.formData).then(res=>{
-            //     console.log(res)
-            // })
         }
     }
 }

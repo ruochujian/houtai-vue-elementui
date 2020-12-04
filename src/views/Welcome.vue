@@ -1,6 +1,6 @@
 <template>
     <div>
-        主要
+        欢迎管理
     </div>
 </template>
 
