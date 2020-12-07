@@ -23,6 +23,12 @@ const routes = [
             },{
                 path: '/users', 
                 component: () => import('../views/Users.vue'),
+            },{
+                path: '/rights', 
+                component: () => import('../views/Authority.vue'),
+            },{
+                path: '/roles', 
+                component: () => import('../views/Roles.vue'),
             }
         ]
     },

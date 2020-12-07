@@ -36,7 +36,7 @@
             </el-aside>
             <!-- 内容 -->
             <el-main :style="isCollapse?'margin-left:64px':'margin-left:180px'">
-                <el-breadcrumb separator="/">
+                <el-breadcrumb separator="/" style="margin-bottom:20px">
                     <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
                     <el-breadcrumb-item>活动列表</el-breadcrumb-item>
                     <el-breadcrumb-item>活动详情</el-breadcrumb-item>
@@ -137,6 +137,7 @@ export default {
     top:50px;
     left: 0;
     bottom: 0;
+    z-index: 9;
     .menu_auto{
         text-align: center;
         font-weight: bold;

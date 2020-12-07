@@ -77,7 +77,7 @@ h2{
     background: #3d566f;
 }
 .login_box{
-    width: 330px;
+    width: 360px;
     box-sizing: border-box;
     padding:20px;
     background: #fff;

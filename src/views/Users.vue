@@ -22,11 +22,7 @@
                 <el-table-column label="状态">
                     <template slot-scope="scope">
                         <el-switch
-                            @change ="handleStatus(
-                                
-                                
-                                
-                                scope.row)"
+                            @change ="handleStatus(scope.row)"
                             v-model="scope.row.mg_state">
                         </el-switch>
                     </template>
@@ -108,11 +104,42 @@
                 <el-form-item label="手机号" prop="mobile">
                     <el-input v-model="editFormData.mobile"></el-input>
                 </el-form-item>
-                
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editUserDiglog = false">取 消</el-button>
                 <el-button type="primary" @click="editUserClick">确 定</el-button>
+            </span>
+        </el-dialog>
+        <!-- 分配角色弹框 -->
+        <el-dialog
+            title="提示"
+            :visible.sync="showRoleDiglog"
+            width="30%">
+            <!-- 分配角色 -->
+            <el-form label-position="left"
+             label-width="120px" 
+             ref="addUserData" 
+             :model="setRoleData">
+                <el-form-item label="当前用户">
+                    <el-input v-model="setRoleData.username" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="当前角色">
+                    <el-input v-model="setRoleData.role" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="分配新角色">
+                    <el-select v-model="selRoleId" placeholder="请选择">
+                        <el-option
+                        v-for="item in roleList"
+                        :key="item.id"
+                        :label="item.roleName"
+                        :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="showRoleDiglog = false">取 消</el-button>
+                <el-button type="primary" @click="saveSelRole">确 定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -155,7 +182,13 @@ export default {
             },
             //编辑用户
             editUserDiglog:false,
-            editFormData:{}
+            editFormData:{},
+            //分配用户
+            showRoleDiglog:false,
+            setRoleData:{},
+            userInfo:{},
+            roleList:[],//角色列表
+            selRoleId:''
         }
     },
     created(){
@@ -245,10 +278,32 @@ export default {
                 const {data:res} = await this.$http.delete(`users/${id}`);
                 console.log(res)
                 if(res.meta.status !== 200) return this.$message.error(res.meta.msg);
-                //删除成功
+                //删除
                 this.$message.success('删除成功！')
                 this.getUsersList();
             })
+        },
+        //分配角色
+        async handleSet(row){
+            console.log(row)
+            this.showRoleDiglog = true;
+            this.setRoleData={
+                username: row.username,
+                role:row.role_name
+            };
+            this.userInfo = row;
+            //获取角色列表
+            let {data:res} = await this.$http.get('roles');
+            this.roleList = res.data
+        },
+        //保存分配角色
+        async saveSelRole(){
+            if(!this.selRoleId) return this.$message.error('请选择分配角色');
+            let {data:res} = await this.$http.put(`users/${this.userInfo.id}/role`,{
+                rid:this.selRoleId
+            });
+            if(res.meta.status !== 200) return this.$message.error(res.meta.msg);
+            this.$message.error(res.meta.msg);
         }
     }
 }
